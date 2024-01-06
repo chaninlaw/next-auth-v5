@@ -1,12 +1,21 @@
 'use client'
+
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub } from 'react-icons/fa'
 import { Button } from '../ui/button'
+import { signIn } from 'next-auth/react'
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
+import { useSearchParams } from 'next/navigation'
 
 export function Social() {
-	const googleLogin = () => {}
+	const searchParams = useSearchParams()
+	const callbackUrl = searchParams.get('callbackUrl')
 
-	const githubLogin = () => {}
+	const onClick = (provider: 'google' | 'github') => {
+		signIn(provider, {
+			callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+		})
+	}
 
 	return (
 		<div className='flex items-center w-full gap-x-2'>
@@ -14,7 +23,7 @@ export function Social() {
 				size='lg'
 				className='w-full'
 				variant='outline'
-				onClick={googleLogin}
+				onClick={() => onClick('google')}
 			>
 				<FcGoogle />
 			</Button>
@@ -23,7 +32,7 @@ export function Social() {
 				size='lg'
 				className='w-full'
 				variant='outline'
-				onClick={githubLogin}
+				onClick={() => onClick('github')}
 			>
 				<FaGithub />
 			</Button>

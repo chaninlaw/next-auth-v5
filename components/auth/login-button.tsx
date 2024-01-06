@@ -1,18 +1,15 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { LoginForm } from './login-form'
 
 interface LoginButtonProps {
 	children: React.ReactNode
 	mode?: 'modal' | 'redirect'
-	asChild?: boolean
 }
 
-export function LoginButton({
-	children,
-	mode = 'redirect',
-	asChild,
-}: LoginButtonProps) {
+export function LoginButton({ children, mode = 'redirect' }: LoginButtonProps) {
 	const router = useRouter()
 
 	const onClick = () => {
@@ -20,7 +17,16 @@ export function LoginButton({
 	}
 
 	if (mode === 'modal') {
-		return <span>TODO: implement modal</span>
+		return (
+			<Dialog>
+				<DialogTrigger asChild={mode === 'modal' ? true : false}>
+					{children}
+				</DialogTrigger>
+				<DialogContent className='p-0 w-auto bg-transparent border-none'>
+					<LoginForm />
+				</DialogContent>
+			</Dialog>
+		)
 	}
 
 	return (
